@@ -1,5 +1,11 @@
 const db = require("./db");
 
+const { client } = require('./db');
+
+// Now you can use the `client` variable here
+// console.log({client});
+
+
 async function getAllRestaurants() {
   try {
     const statment = `
@@ -50,6 +56,28 @@ async function createOneReview(restaurantID, name, rating, review) {
   }
 }
 
+
+async function createRestaurant(req) {
+  try {
+    const database = db.client.db("projectdb");
+    const restaurants = database.collection("restaurants");
+    // create a document to insert
+    const doc = {
+      name: req.body.name, location: req.body.location, price_range: req.body.price_range,
+    }
+    const insertResult = await restaurants.insertOne(doc);
+    console.log({insertResult})
+    const findResult = await restaurants.findOne();
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  } finally {
+    await client.close();
+  } return (findResult)
+
+}
+
+
+
 module.exports.getAllRestaurants = getAllRestaurants;
 module.exports.getAllReviews = getAllReviews;
 module.exports.createOneReview = createOneReview;
+module.exports.createRestaurant = createRestaurant;

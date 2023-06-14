@@ -68,16 +68,9 @@ app.post("/api/restaurants/:id/reviews", async (req, res) => {
 // Create (POST) a restaurant
 app.post("/api/restaurants", async (req, res) => {
   console.log(req.body);
-  try {
-    const result = await collection.insertMany(
-      {name: req.body.name, location: req.body.location }
-      // [req.body.name, req.body.location, req.body.price_range]
-    );
-    console.log({result});
-    res.json(result);
-  } catch (err) {
-    console.log(err);
-  }
+  const restaurant = await queries.createRestaurant(req)
+  // console.log({restaurant})
+  res.status(200).json(restaurant);
 });
 
 // Update restaurants
