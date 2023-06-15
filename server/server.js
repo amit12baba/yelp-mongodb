@@ -9,8 +9,8 @@ const cors = require("cors");
 const db = require("./db");
 
 const queries = require("./queries");
-const  {ObjectId}  = require("mongodb").ObjectId;
-// const  ObjectID  = require("mongodb").ObjectID;
+// const  {ObjectId}  = require("mongodb").ObjectId;
+const  ObjectId  = require("mongodb").ObjectId;
 
 // translates body to json objects
 app.use(express.json());
@@ -38,6 +38,7 @@ app.get("/api/restaurants/:id", async (req, res) => {
     
     const database = db.client.db("projectdb");
     const restaurants = database.collection("restaurants");
+    
     result = await restaurants.findOne({ _id: new ObjectId(restaurantId) });
   } catch (err) {
     console.log(err);

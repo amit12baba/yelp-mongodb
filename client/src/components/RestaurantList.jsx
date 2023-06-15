@@ -67,11 +67,11 @@ const RestaurantList = () => {
           {restaurants &&
             restaurants.map((restaurant) => {
               console.log({restaurant});
-              console.log(restaurant.id);
+              console.log(restaurant._id);
               return (
                 <tr
-                  onClick={() => handleRestaurantSelect(restaurant.id)}
-                  key={restaurant.id}
+                  onClick={() => handleRestaurantSelect(restaurant._id)}
+                  key={restaurant._id}
                 >
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
@@ -81,7 +81,7 @@ const RestaurantList = () => {
                   </td>
                   <td>
                     <button
-                      onClick={(e) => handleUpdate(e, restaurant.id)}
+                      onClick={(e) => handleUpdate(e, restaurant._id)}
                       className="btn btn-warning"
                     >
                       Update
@@ -89,7 +89,7 @@ const RestaurantList = () => {
                   </td>
                   <td>
                     <button
-                      onClick={(e) => handleDelete(e, restaurant.id)}
+                      onClick={(e) => handleDelete(e, restaurant._id)}
                       className="btn btn-danger"
                     >
                       Delete
