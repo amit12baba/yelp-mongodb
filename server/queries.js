@@ -8,26 +8,35 @@ const { client } = require('./db');
 
 async function getAllRestaurants() {
   try {
-    const statment = `
-  SELECT 
-    restaurants.id,
-    restaurants.name,
-    restaurants.location,
-    restaurants.price_range,
-    trunc(avg(reviews.rating))::int as avg_rating,
-    count(reviews.id)::int as review_count
-  FROM
-    restaurants
-    LEFT JOIN reviews ON restaurants.id = reviews.restaurant_id
-  GROUP BY
-    restaurants.id;`;
-    const results = await db.query(statment);
+    const restaurants = db.client.db("projectdb").collection("restaurants");
+
+    const pipeline = [
+      {
+        $lookup:
+        {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "restaurant_id",
+            as: "reviews"
+        }
+    },
+    {
+        "$addFields": {
+            "avg_rating": {
+                "$avg": "$reviews.rating"
+            }
+        }
+    }
+    ];
+
+    const results = await restaurants.aggregate(pipeline).toArray();
     console.log(results);
-    return results.rows;
+    return results;
   } catch (err) {
     console.log(err);
   }
 }
+
 
 async function getAllReviews(restaurantID) {
   try {
@@ -67,11 +76,11 @@ async function createRestaurant(req) {
     }
     const insertResult = await restaurants.insertOne(doc);
     console.log({ insertResult })
-    const result = await restaurants.findOne({_id: insertResult.insertedId});
+    const result = await restaurants.findOne({ _id: insertResult.insertedId });
     return (result)
   } finally {
     await client.close();
-  } 
+  }
 }
 
 

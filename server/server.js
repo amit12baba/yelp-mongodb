@@ -9,6 +9,8 @@ const cors = require("cors");
 const db = require("./db");
 
 const queries = require("./queries");
+const  {ObjectId}  = require("mongodb").ObjectId;
+// const  ObjectID  = require("mongodb").ObjectID;
 
 // translates body to json objects
 app.use(express.json());
@@ -28,21 +30,22 @@ app.get("/api/restaurants", async (req, res) => {
 
 // GET a restaurant
 app.get("/api/restaurants/:id", async (req, res) => {
-  console.log(req.params.id);
-  let result = null;
+  let result
+  res.send(req.params.id)
   try {
-    const sql = "db.restaurants.find({id : req.params.id})";
-    // const sqlParams = [req.params.id];
-
-    console.log(sql);
-    result = await db.query(sql);
+    const restaurantId = req.params.id;
+    console.log(req.params.id);
+    
+    const database = db.client.db("projectdb");
+    const restaurants = database.collection("restaurants");
+    result = await restaurants.findOne({ _id: new ObjectId(restaurantId) });
   } catch (err) {
     console.log(err);
     console.log("error!!!!!");
-  }
-  console.log(result.rows[0]);
 
-  res.json(result.rows[0]);
+  }
+  // console.log(result);
+  res.json(result);
 });
 
 // get all reviews for restaurant
