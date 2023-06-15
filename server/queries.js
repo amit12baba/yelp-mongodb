@@ -66,13 +66,12 @@ async function createRestaurant(req) {
       name: req.body.name, location: req.body.location, price_range: req.body.price_range,
     }
     const insertResult = await restaurants.insertOne(doc);
-    console.log({insertResult})
-    const findResult = await restaurants.findOne();
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    console.log({ insertResult })
+    const result = await restaurants.findOne({_id: insertResult.insertedId});
+    return (result)
   } finally {
     await client.close();
-  } return (findResult)
-
+  } 
 }
 
 
