@@ -6,6 +6,8 @@ export const ReviewsContextProvider = (props) => {
     const [reviews, setReviews] = useState([]);
     
     const addReview = (review) => {
+      console.log("^^^^")
+      console.log(reviews)
       console.log({review})
       setReviews([...reviews, review]);
     };

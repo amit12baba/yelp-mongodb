@@ -7,7 +7,6 @@ import StarRating from "./StarRating";
 const Reviews = (props) => {
   console.log({ props });
   const { reviews, setReviews } = useContext(ReviewsContext);
-  // let navigate = useNavigate();
   console.log({ reviews });
 
   useEffect(() => {
@@ -15,9 +14,10 @@ const Reviews = (props) => {
       try {
         // http://localhost:3005/api/restaurants/1
         const response = await RestaurantFinder.get(`/${props.id}/reviews`);
+        console.log("&&&&")
         console.log(response);
         // Adding all the restaurants to the context state
-        setReviews(response.data.data);
+        setReviews(response.data.reviews);
       } catch (err) {}
     }
     fetchData();

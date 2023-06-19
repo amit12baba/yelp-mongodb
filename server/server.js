@@ -10,7 +10,7 @@ const db = require("./db");
 
 const queries = require("./queries");
 // const  {ObjectId}  = require("mongodb").ObjectId;
-const  ObjectId  = require("mongodb").ObjectId;
+const ObjectId = require("mongodb").ObjectId;
 
 // translates body to json objects
 app.use(express.json());
@@ -31,33 +31,39 @@ app.get("/api/restaurants", async (req, res) => {
 // GET a restaurant
 app.get("/api/restaurants/:id", async (req, res) => {
   let result
-  res.send(req.params.id)
+  // res.send(req.params.id)
   try {
     const restaurantId = req.params.id;
-    console.log(req.params.id);
-    
+    console.log("this is the id" + req.params.id);
+
     const database = db.client.db("projectdb");
     const restaurants = database.collection("restaurants");
-    
-    result = await restaurants.findOne({ _id: new ObjectId(restaurantId) });
+
+    const result = await restaurants.findOne({ _id: new ObjectId(restaurantId) });
+    console.log("#####");
+    console.log(result)
+    res.json({ id: req.params.id, result });
+
   } catch (err) {
     console.log(err);
     console.log("error!!!!!");
-
+    res.status(500).json({ error: "An error occurred" });
   }
-  // console.log(result);
-  res.json(result);
 });
 
 // get all reviews for restaurant
 app.get("/api/restaurants/:id/reviews", async (req, res) => {
   const reataurantID = req.params.id;
   const reviews = await queries.getAllReviews(reataurantID);
-  res.status(200).json({
-    status: "success",
-    results: reviews.length,
-    data: reviews,
-  });
+  console.log("%%%%")
+  console.log(reviews)
+  res.json({ reviews });
+
+  // res.status(200).json({
+  //   status: "success",
+  //   results: reviews,
+  //   data: reviews,
+  // });
 });
 
 // creat a review
@@ -96,12 +102,14 @@ app.put("/api/restaurants/:id", async (req, res) => {
 // DELETE restaurants
 app.delete("/api/restaurants/:id", async (req, res) => {
   try {
-    const result = await db.query("delete from restaurants where id = $1", [
-      req.params.id,
-    ]);
-    res.status(204).json({
-      status: "success",
-    });
+    const restaurantId = req.params.id;
+
+    const database = db.client.db("projectdb");
+    const restaurants = database.collection("restaurants");
+
+    const result = await restaurants.deleteOne({ _id: restaurantId });
+    res.json(result);
+
   } catch (err) {
     console.log(err);
   }

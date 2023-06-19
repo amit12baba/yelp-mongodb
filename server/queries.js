@@ -40,31 +40,36 @@ async function getAllRestaurants() {
 
 async function getAllReviews(restaurantID) {
   try {
-    const sql = "select * from reviews where restaurant_id = $1";
-    const sqlParams = [restaurantID];
-    console.log(restaurantID);
-    const results = await db.query(sql, sqlParams);
+    const reviewsCollection = db.client.db("projectdb").collection("reviews");
+    const query = { restaurant_id: restaurantID };
+    console.log("******")
+    console.log(query)
+    const results = await reviewsCollection.find(query).toArray();
+    console.log("@@@@")
     console.log(results);
-    return results.rows;
+    return results;
   } catch (err) {
     console.log(err);
   }
 }
+
 
 async function createOneReview(restaurantID, name, rating, review) {
   try {
-    const sql =
-      "insert into reviews (name, rating, review, restaurant_id) values ($1,$2,$3,$4) returning *";
-    const sqlParams = [name, rating, review, restaurantID];
-    console.log(restaurantID);
-    const results = await db.query(sql, sqlParams);
-    console.log({ rows: results.rows });
-    return results.rows[0];
+    const reviewsCollection = db.client.db("projectdb").collection("reviews");
+    const reviewObject = {
+      name: name,
+      rating: rating,
+      review: review,
+      restaurant_id: restaurantID
+    };
+    const result = await reviewsCollection.insertOne(reviewObject);
+    console.log({ insertedId: result.insertedId });
+    return result;
   } catch (err) {
     console.log(err);
   }
 }
-
 
 async function createRestaurant(req) {
   try {

@@ -25,7 +25,8 @@ const AddReview = () => {
       });
       console.log("=============================================")
       addReview(response.data);
-      console.log(response);
+      console.log("this is the response");
+      console.log(response)
 
     } catch (err) {}
   };

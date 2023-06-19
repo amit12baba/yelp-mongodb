@@ -20,7 +20,8 @@ const RestaurantList = () => {
     async function fetchData() {
       try {
         const response = await RestaurantFinder.get("/");
-        console.log(response.data.data.restaurant);
+        console.log("")
+        console.log(response);
         // Adding all the restaurants to the context state
         setRestaurants(response.data.data.restaurant);
       } catch (err) {}
@@ -34,7 +35,7 @@ const RestaurantList = () => {
       const response = await RestaurantFinder.delete(`/${id}`);
       setRestaurants(
         restaurants.filter((restaurant) => {
-          return restaurant.id !== id;
+          return restaurant._id !== restaurant.reviews._id;
         })
       );
     } catch (err) {}
@@ -46,7 +47,7 @@ const RestaurantList = () => {
   };
 
   const handleRestaurantSelect = (id) => {
-    console.log({id})
+    // console.log({id})
     navigate(`/restaurants/${id}`);
   };
 
