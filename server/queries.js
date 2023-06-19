@@ -1,9 +1,7 @@
 const db = require("./db");
 
 const { client } = require('./db');
-
-// Now you can use the `client` variable here
-// console.log({client});
+const ObjectId = require("mongodb").ObjectId;
 
 
 async function getAllRestaurants() {
@@ -14,22 +12,23 @@ async function getAllRestaurants() {
       {
         $lookup:
         {
-            from: "reviews",
-            localField: "_id",
-            foreignField: "restaurant_id",
-            as: "reviews"
+          from: "reviews",
+          localField: "_id",
+          foreignField: "restaurant_id",
+          as: "reviews"
         }
-    },
-    {
-        "$addFields": {
-            "avg_rating": {
-                "$avg": "$reviews.rating"
-            }
+      },
+      
+      {
+        $addFields: {
+          avg_rating: { $avg: "$reviews.rating" },
+
         }
-    }
+      }
     ];
 
     const results = await restaurants.aggregate(pipeline).toArray();
+    console.log("@@@@@@")
     console.log(results);
     return results;
   } catch (err) {
@@ -42,11 +41,7 @@ async function getAllReviews(restaurantID) {
   try {
     const reviewsCollection = db.client.db("projectdb").collection("reviews");
     const query = { restaurant_id: restaurantID };
-    console.log("******")
-    console.log(query)
     const results = await reviewsCollection.find(query).toArray();
-    console.log("@@@@")
-    console.log(results);
     return results;
   } catch (err) {
     console.log(err);
@@ -62,7 +57,7 @@ async function createOneReview(restaurantID, name, rating, review) {
       name: name,
       rating: rating,
       review: review,
-      restaurant_id: restaurantID
+      restaurant_id: new ObjectId(restaurantID)
     };
     const insertResult = await reviews.insertOne(doc);
     console.log({ insertResult })
