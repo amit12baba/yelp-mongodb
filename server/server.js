@@ -107,13 +107,16 @@ app.delete("/api/restaurants/:id", async (req, res) => {
     const database = db.client.db("projectdb");
     const restaurants = database.collection("restaurants");
 
-    const result = await restaurants.deleteOne({ _id: restaurantId });
+    const result = await restaurants.deleteOne({ _id: new ObjectId (restaurantId) });
+    console.log(result)
     res.json(result);
 
   } catch (err) {
     console.log(err);
   }
 });
+
+
 
 const port = 3010;
 

@@ -56,15 +56,17 @@ async function getAllReviews(restaurantID) {
 
 async function createOneReview(restaurantID, name, rating, review) {
   try {
-    const reviewsCollection = db.client.db("projectdb").collection("reviews");
-    const reviewObject = {
+    const database = db.client.db("projectdb");
+    const reviews = database.collection("reviews");
+    const doc = {
       name: name,
       rating: rating,
       review: review,
       restaurant_id: restaurantID
     };
-    const result = await reviewsCollection.insertOne(reviewObject);
-    console.log({ insertedId: result.insertedId });
+    const insertResult = await reviews.insertOne(doc);
+    console.log({ insertResult })
+    const result = await reviews.findOne({ _id: insertResult.insertedId });
     return result;
   } catch (err) {
     console.log(err);
