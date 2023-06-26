@@ -9,6 +9,7 @@ const cors = require("cors");
 const db = require("./db");
 
 const queries = require("./queries");
+const { MongoClient } = require("mongodb");
 // const  {ObjectId}  = require("mongodb").ObjectId;
 const ObjectId = require("mongodb").ObjectId;
 
@@ -30,6 +31,18 @@ app.get("/api/restaurants", async (req, res) => {
 
 // GET a restaurant
 app.get("/api/restaurants/:id", async (req, res) => {
+  async function connectMongo() {
+    try {
+      const uri = 'mongodb://127.0.0.1:27017';
+      const client = new MongoClient(uri);
+      await client.connect();
+      console.log('Connected to MongoDB');
+      return client
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error);
+    }
+  }
+  const client = await connectMongo();
   let result
   // res.send(req.params.id)
   try {

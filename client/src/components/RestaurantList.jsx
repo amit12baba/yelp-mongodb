@@ -88,7 +88,6 @@ const RestaurantList = () => {
                     <button
                       onClick={(e) => handleUpdate(e, restaurant._id)}
                       className="btn btn-warning"
-                      name="update"
 
                     >
                       Update
@@ -98,7 +97,6 @@ const RestaurantList = () => {
                     <button
                       onClick={(e) => handleDelete(e, restaurant._id)}
                       className="btn btn-danger"
-                    // id="delete_restaurant"
 
                     >
                       Delete

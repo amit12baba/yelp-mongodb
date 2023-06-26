@@ -23,7 +23,7 @@ const AddReview = () => {
         rating: rating,
         review: reviewText,
       });
-      console.log("=============================================")
+      console.log("222222")
       addReview(response.data);
       console.log("this is the response");
       console.log(response)

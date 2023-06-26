@@ -29,7 +29,6 @@ async function getAllRestaurants() {
     ];
 
     const results = await restaurants.aggregate(pipeline).toArray();
-    console.log("@@@@@@")
     console.log(results);
     return results;
   } catch (err) {
@@ -41,6 +40,8 @@ async function getAllRestaurants() {
 async function getAllReviews(restaurantID) {
   try {
     const reviewsCollection = client.db("projectdb").collection("reviews");
+    console.log("@@@@@@")
+    console.log(query)
     const query = { restaurant_id: restaurantID };
     const results = await reviewsCollection.find(query).toArray();
     return results;
@@ -51,6 +52,19 @@ async function getAllReviews(restaurantID) {
 
 
 async function createOneReview(restaurantID, name, rating, review) {
+  async function connectMongo() {
+    try {
+      const uri = 'mongodb://127.0.0.1:27017';
+      const client = new MongoClient(uri);
+      await client.connect();
+      console.log('Connected to MongoDB');
+      return client
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error);
+    }
+  }
+  const client = await connectMongo();
+
   try {
     const database = client.db("projectdb");
     const reviews = database.collection("reviews");
