@@ -36,7 +36,7 @@ app.get("/api/restaurants/:id", async (req, res) => {
     const restaurantId = req.params.id;
     console.log("this is the id" + req.params.id);
 
-    const database = db.client.db("projectdb");
+    const database = client.db("projectdb");
     const restaurants = database.collection("restaurants");
 
     const result = await restaurants.findOne({ _id: new ObjectId(restaurantId) });

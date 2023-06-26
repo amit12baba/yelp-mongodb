@@ -24,7 +24,7 @@ const RestaurantList = () => {
         console.log(response);
         // Adding all the restaurants to the context state
         setRestaurants(response.data.data.restaurant);
-      } catch (err) {}
+      } catch (err) { }
     }
     fetchData();
   }, []);
@@ -42,7 +42,7 @@ const RestaurantList = () => {
           return restaurant._id !== id;
         })
       );
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const handleUpdate = (e, id) => {
@@ -57,7 +57,7 @@ const RestaurantList = () => {
 
   return (
     <div className="list-group mt-4">
-      <table className="table table-dark table-hover">
+      <table className="restaurant-table table table-dark table-hover">
         <thead>
           <tr className="table-primary">
             <th scope="col">Restaurant</th>
@@ -68,13 +68,13 @@ const RestaurantList = () => {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="restaurant-table-body">
           {restaurants &&
             restaurants.map((restaurant) => {
-              console.log({restaurant});
+              console.log({ restaurant });
               console.log(restaurant._id);
               return (
-                <tr
+                <tr className="restaurant-table-row"
                   onClick={() => handleRestaurantSelect(restaurant._id)}
                   key={restaurant._id}
                 >
@@ -88,6 +88,8 @@ const RestaurantList = () => {
                     <button
                       onClick={(e) => handleUpdate(e, restaurant._id)}
                       className="btn btn-warning"
+                      name="update"
+
                     >
                       Update
                     </button>
@@ -96,6 +98,8 @@ const RestaurantList = () => {
                     <button
                       onClick={(e) => handleDelete(e, restaurant._id)}
                       className="btn btn-danger"
+                    // id="delete_restaurant"
+
                     >
                       Delete
                     </button>

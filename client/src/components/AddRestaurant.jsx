@@ -32,7 +32,7 @@ const AddRestaurant = () => {
           onChange={(e) => setName(e.target.value)}
           type="text"
           className="form-control"
-          id="exampleInputEmail1"
+          id="name"
           aria-describedby="emailHelp"
           placeholder="Name"
         ></input>
@@ -43,7 +43,7 @@ const AddRestaurant = () => {
           onChange={(e) => setLocation(e.target.value)}
           type="text"
           className="form-control"
-          id="exampleInputEmail1"
+          id="location"
           aria-describedby="emailHelp"
           placeholder="Location"
         ></input>
@@ -53,7 +53,7 @@ const AddRestaurant = () => {
           value={priceRange}
           onChange={(e) => setPriceRange(e.target.value)}
           className="form-control"
-          id="inputGroupSelect02"
+          id="price_range"
           defaultValue=""
         >
           <option disabled>Price Range</option>
@@ -67,6 +67,7 @@ const AddRestaurant = () => {
       <button
         type="submit"
         className="btn btn-primary col-auto"
+        name="add"
       >
         Add
       </button>
